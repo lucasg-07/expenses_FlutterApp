@@ -4,13 +4,14 @@ import 'dart:io';
 import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'components/expenses_page.dart';
 import 'components/theme.dart';
 
 import 'components/transaction_list.dart';
 import 'components/chart.dart';
 import 'models/transaction.dart';
 
-main() => runApp(ExpensesApp());
+void main() => runApp(ExpensesApp());
 
 class ExpensesApp extends StatelessWidget {
   ExpensesApp({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
       value: value,
       date: date,
     );
-    // Soy mono e vacilão
+
     setState(() {
       _transactions.add(newTransaction);
     });
@@ -83,6 +84,13 @@ class _MyHomePageState extends State<MyHomePage> {
         : IconButton(icon: Icon(icon), onPressed: fn);
   }
 
+  Future<void> navigateToSecondPage(BuildContext context) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const SecondPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -102,6 +110,9 @@ class _MyHomePageState extends State<MyHomePage> {
             });
           },
         ),
+      _getIconButton(
+          Platform.isIOS ? CupertinoIcons.money_dollar : Icons.attach_money,
+          () => navigateToSecondPage(context)),
       _getIconButton(
         Platform.isIOS ? CupertinoIcons.add : Icons.add,
         () => _openTransactionFormModal(context),
